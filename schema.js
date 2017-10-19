@@ -1,3 +1,4 @@
+const axios = require('axios');
 const {
     GraphQLObjectType,
     GraphQLString,
@@ -9,11 +10,11 @@ const {
 const _ = require('lodash');
 
 //Hardcoded data
-const customers = [
-    {id: '1', name: 'Jonh', email: 'joh.e@fff.com', age: 35},
-    {id: '2', name: 'Dan', email: 'dan.e@fff.com', age: 25},
-    {id: '3', name: 'Satan', email: 'satan.e@fff.com', age: 335}
-];
+// const customers = [
+//     {id: '1', name: 'Jonh', email: 'joh.e@fff.com', age: 35},
+//     {id: '2', name: 'Dan', email: 'dan.e@fff.com', age: 25},
+//     {id: '3', name: 'Satan', email: 'satan.e@fff.com', age: 335}
+// ];
 
 //Customer Type
 const CustomerType = new GraphQLObjectType({
@@ -37,13 +38,16 @@ const RootQuery = new GraphQLObjectType({
                 id: {type: GraphQLString},
             },
             resolve(parentValue, args){
-                return _.find(customers, {id: args.id});
+                // return _.find(customers, {id: args.id});
+                return axios.get('http://localhost:3000/customers/' + args.id)
+                    .then(res => res.data);
             }
         },
         customers: {
             type: new GraphQLList(CustomerType),
             resolve(parentValue, args){
-                return customers;
+                return axios.get('http://localhost:3000/customers')
+                    .then(res => res.data)
             }
         }
     }
