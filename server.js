@@ -9,6 +9,6 @@ app.use('/graphql', expressGraphQL({
     graphiql: true
 }))
 
-app.listen(4001, () => {
+app.listen(4000, () => {
     console.log('server is running');
 })
